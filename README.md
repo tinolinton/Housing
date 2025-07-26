@@ -77,3 +77,21 @@ This repository contains a deep learning model developed to predict property pri
 - **KerasRegressor**: Enabled scikit-learn compatible hyperparameter tuning
 - **Early Stopping**: Monitored validation loss with patience of 10 epochs
 - **Batch Normalization**: Stabilized training and improved convergence
+
+## Dependencies
+- Python 3.7+
+- Libraries:
+  ```requirements
+  pandas==1.3.4
+  numpy==1.21.4
+  matplotlib==3.5.1
+  seaborn==0.11.2
+  scikit-learn==1.0.2
+  tensorflow==2.7.0
+  scikeras==0.7.0
+  jupyter==1.0.0
+
+![Prediction Visualization](prediction_visualization.png)
+*Figure: Actual vs Predicted prices show strong linear relationship (R² = 0.85)*
+
+For detailed implementation, refer to the [Jupyter notebook](code_baseModel.ipynb)
