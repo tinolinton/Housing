@@ -78,10 +78,10 @@ This repository contains a deep learning solution for predicting property prices
   - **R² (Coefficient of Determination):** Indicates the proportion of variance in the actual prices explained by the model. Values closer to 1 mean better fit.
 
 - **Results:**
-  - Test MAE: ~0.18
-  - Test MSE: ~0.058
-  - Test RMSE: ~0.24
-  - Test R²: ~0.95
+  - `Test MAE: ~0.18`
+  - `Test MSE: ~0.058`
+  - `Test RMSE: ~0.24`
+  - `Test R²: ~0.95`
 
 ### 7. Visualizations
 
