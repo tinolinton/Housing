@@ -1,9 +1,11 @@
 # Property Price Prediction Deep Learning Model
 
 ## Overview
-This repository contains a deep learning model developed to predict property prices based on various features from a real estate dataset. The model leverages neural network architectures with hyperparameter tuning to achieve accurate price predictions. The project follows a structured workflow including exploratory data analysis (EDA), data preprocessing, model building, hyperparameter tuning, and evaluation.
+
+This repository contains a deep learning solution for predicting property prices using a real estate dataset. The workflow includes exploratory data analysis (EDA), data cleaning, feature engineering, preprocessing, model building, training, evaluation, and visualization. The model is built with TensorFlow/Keras and leverages hyperparameter tuning and advanced feature selection.
 
 ## Dataset
+
 - **Source**: `Housing.csv`
 - **Features**:
   - `price`: Target variable (property price)
@@ -21,64 +23,83 @@ This repository contains a deep learning model developed to predict property pri
   - `furnishingstatus`: Furnishing status (furnished, semi-furnished, unfurnished)
 
 ## Workflow
-1. **Exploratory Data Analysis (EDA)**:
-   - Examined data structure and missing values
-   - Visualized price distribution and feature correlations
-   - Identified outliers and data imbalances
-   - Key findings:
-     - Price distribution is right-skewed (log transformation applied)
-     - `area`, `bathrooms`, and `stories` show highest correlation with price
-     - Missing values in `parking`, `mainroad`, `hotwaterheating`, and `prefarea`
 
-2. **Data Preprocessing**:
-   - **Handled Missing Values**: 
-     - Median imputation for numerical features
-     - Mode imputation for categorical features
-   - **Encoded Categorical Variables**: One-hot encoding
-   - **Feature Scaling**: Standardized numerical features using `StandardScaler`
-   - **Target Transformation**: Applied log transformation to normalize price distribution
-   - **Feature Engineering**: Created interaction terms and selected features using mutual information
+### 1. Exploratory Data Analysis (EDA)
 
-3. **Model Architecture**:
-   - **Base Model**: Sequential neural network with:
-     - Input layer (dimension based on processed features)
-     - 3 Dense layers with ReLU activation
-     - Batch Normalization and Dropout layers for regularization
-     - Output layer with linear activation
-   - **Hyperparameter Tuning**: Used `RandomizedSearchCV` to optimize:
-     - Number of layers (1-3)
-     - Units per layer (64-256)
-     - Dropout rate (0.1-0.5)
-     - Learning rate (0.0001-0.01)
-     - Batch size (16-128)
-     - Activation functions (ReLU, tanh)
+- Inspected data structure and missing values.
+- Visualized price distribution and feature relationships.
+- Identified outliers and skewed features.
+- Key findings:
+  - Price and area are right-skewed.
+  - `area`, `bedrooms`, `bathrooms`, `stories`, and `parking` are most correlated with price.
 
-4. **Training**:
-   - Split data into training (80%) and testing (20%) sets
-   - Implemented early stopping to prevent overfitting
-   - Used Adam optimizer and Mean Squared Error (MSE) loss
-   - Trained with 300 epochs and batch size of 32
+### 2. Data Cleaning & Preprocessing
 
-5. **Evaluation**:
-   - **Metrics**: 
-     - Mean Absolute Error (MAE)
-     - Mean Squared Error (MSE)
-     - Root Mean Squared Error (RMSE)
-     - R² (coefficient of determination)
-   - **Results**:
-     - Test MAE: 0.18
-     - Test R²: 0.95
-     - Prediction visualization:
-       ![Prediction vs Actual](prediction_visualization.png)
+- Removed extreme values for `bedrooms` and `area`.
+- Imputed missing values:
+  - Median for numerical (`parking`)
+  - Mode for categorical (`mainroad`, `hotwaterheating`, `prefarea`)
+- Feature engineering:
+  - Created interaction terms (`area_x_stories`, `bed_bath_ratio`)
+  - New features: `price_per_area`, `total_rooms`, `luxury_score`
+- Encoded categorical variables:
+  - Binary mapping for yes/no columns
+  - One-hot encoding for `furnishingstatus`
+- Outlier handling:
+  - Winsorization for `price` and `area`
+- Skewness correction:
+  - PowerTransformer applied to skewed features
+
+### 3. Feature Selection
+
+- Used mutual information to select top predictive features.
+
+### 4. Model Building
+
+- Multilayer Perceptron (MLP) with:
+  - Input layer (based on selected features)
+  - 3 Dense layers (ReLU activation)
+  - Batch Normalization and Dropout for regularization
+  - Output layer (linear activation)
+- Adam optimizer, MSE loss, and early stopping.
+
+### 5. Training
+
+- Data split: 80% train, 20% test.
+- Trained for up to 300 epochs with batch size 32.
+- Early stopping to prevent overfitting.
+
+### 6. Evaluation
+
+- **Metrics Used:**
+  - **Mean Absolute Error (MAE):** Measures the average magnitude of errors between predicted and actual prices, without considering direction. Lower values indicate better accuracy.
+  - **Mean Squared Error (MSE):** Calculates the average of squared differences between predicted and actual prices. Penalizes larger errors more than MAE.
+  - **Root Mean Squared Error (RMSE):** The square root of MSE, representing error in the same units as the target variable. Easier to interpret than MSE.
+  - **R² (Coefficient of Determination):** Indicates the proportion of variance in the actual prices explained by the model. Values closer to 1 mean better fit.
+
+- **Results:**
+  - Test MAE: ~0.18
+  - Test MSE: ~0.058
+  - Test RMSE: ~0.24
+  - Test R²: ~0.95
+
+### 7. Visualizations
+
+- Training history (loss curves)
+- Residual analysis
+- Feature importance (from first layer weights)
+- Actual vs Predicted scatter plot
+- Error distribution histogram
 
 ## Key Techniques
-- **Mutual Information**: Identified top predictive features (`area`, `bathrooms`, `stories`)
-- **Power Transformer**: Normalized target variable for better convergence
-- **KerasRegressor**: Enabled scikit-learn compatible hyperparameter tuning
-- **Early Stopping**: Monitored validation loss with patience of 10 epochs
-- **Batch Normalization**: Stabilized training and improved convergence
+
+- Mutual Information for feature selection
+- PowerTransformer for normalization
+- Early Stopping for regularization
+- Batch Normalization for stable training
 
 ## Dependencies
+
 - Python 3.7+
 - Libraries:
   ```requirements
@@ -90,8 +111,15 @@ This repository contains a deep learning model developed to predict property pri
   tensorflow==2.7.0
   scikeras==0.7.0
   jupyter==1.0.0
+  ```
+
+## Results Visualization
 
 ![Prediction Visualization](prediction_visualization.png)
-*Figure: Actual vs Predicted prices show strong linear relationship (R² = 0.85)*
+_Figure: Actual vs Predicted prices show strong linear relationship (R² ≈ 0.95)_
 
-For detailed implementation, refer to the [Jupyter notebook](code_baseModel.ipynb)
+## Usage
+
+1. Clone the repository and install dependencies.
+2. Run [code_baseModel.ipynb](code_baseModel.ipynb) in Jupyter Notebook.
+3. Inspect outputs and visualizations in the notebook.
